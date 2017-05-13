@@ -3,9 +3,12 @@ package com.example.ahmed.appsquare_retrofit;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.ahmed.appsquare_retrofit.adapter.RepoAdapter;
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.movies_recycler_view);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager);
-       
+
         adapter=new RepoAdapter(repoResults, R.layout.single_row_main_activity, MainActivity.this);
         recyclerView.setAdapter(adapter);
 
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
                 swipeContainer.setRefreshing(false);
             }
         });
+
+
 
         scrollListener= new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -73,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
     }
 
     private void getRepodata(final int page){
@@ -95,5 +101,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if (id == R.id.action_refresh) {
+            getRepodata(repoPage);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
